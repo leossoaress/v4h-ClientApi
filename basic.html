@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<!--  <script src='http://conf.v4h.cloud/libs/v4h_cli_api.min.js'></script> -->
+<script src='../js/v4h_cli_api.js'></script>
+<script src="./js/videoconf.js"></script>
+
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>V4H TEST</h1>
+
+<legend>Conferência de Vídeo</legend>
+<div style="padding: 0px 0px 10px 0px;"><div class="form-group"><div class="form-group">
+<div id="confButton">
+<button type="button" onclick="startVideoConf()">Iniciar Chamada de Vídeo</button>
+</div>
+<div id="meet"></div>
+
+<div style="padding: 20px 0px 0px 0px;">Últimas Chamadas:</div>
+<div style="padding: 5px 0px 0px 20px;" id="last_conferences">
+
+</div>
+</div>
+</div></div>
+<div id="urlButton">
+<button type="button" onclick="getConfUrl()">Link para chamada de vídeo</button>
+</div>
+<div id="url">
+</div>
+</div>
+</body>
+</html>
+
+
