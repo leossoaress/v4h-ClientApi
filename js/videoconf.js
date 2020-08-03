@@ -1,51 +1,106 @@
-
 v4h_api = new V4H();
 
-const audit_url_base = 'http://localhost:8444';
-
 $(document).ready(function() {
-	v4h_api.login('usuario', 'senha');	// Troca usuário e senha pelo token v4h_api.token
-	// v4h_api.loginWithToken(v4h_api.token['access']);		// Efetua login com o token
-	// v4h_api.refreshToken(v4h_api.token['refresh']);		// Renova o token de acesso
+
+  // Fazendo o login no sistema v4h
+	v4h_api.login('usuario', 'senha').then(() => {
+    console.log('Login realizado com sucesso.')
+  });
+
+  // Desabilitar o botão para encerrar a conferência
+  document.getElementById("stopConference").disabled = true;
+
+  // Desabilitar o botão para encerrar a conferência
+  document.getElementById("joinConference").disabled = true;
+
 });
 
+// Funcão executada quando o botão de iniciar uma conferência é clicado
 function startVideoConf() {
-	document.getElementById("confButton").innerHTML = "";
-	console.log("Chamando resquestConference()");
-	v4h_api.requestConference().then(function (sessionId) {
-		v4h_api.startConference(sessionId, document.querySelector('#meet')) //, 854, 480, 'Joao', 'http://servidor.com/avatar/joao');
-		v4h_api.registerEndedListener(conferenceEnded);
-	});
+
+  // Desabilitar o botão para iniciar a conferência
+  document.getElementById("startConference").disabled = true;
+
+  // Desabilitar o botão para iniciar a conferência
+  document.getElementById("joinConference").disabled = true;
+
+  // Habilitar o botão para encerrar a conferência
+  document.getElementById("stopConference").disabled = false;
+
+  sessionId = document.getElementById('sessionId').value;
+
+  // Requisitar uma conferência
+	v4h_api.requestConference(sessionId).then(function (sessionId) {
+
+    //Iniciar uma conferência
+    v4h_api.startConference(sessionId, document.querySelector('#meet'), '100%', '100%', 'Nome Sobrenome', 'https://picsum.photos/200');
+    
+    // Registar um callback para ser executado na saída da conferência
+    v4h_api.registerEndedListener(conferenceEnded);
+  });
+  
 }
 
-function getConfUrl() {
-	v4h_api.getGuestUrl(v4h_api.sessionId, 'Jose', 'http://servidor.com/avatar/joao').then(function (data) {
-		console.log('conference url is ' + data['url'])
-		document.getElementById("url").innerHTML = "<a href=" + '"' + data['url'] + '"' + ">Click to Open Link</a>"
-	});
+// Funcão executada quando o botão de juntar-se a uma conferência é clicado
+function joinVideoConf() {
+
+  // Desabilitar o botão para iniciar a conferência
+  document.getElementById("startConference").disabled = true;
+
+  // Desabilitar o botão para iniciar a conferência
+  document.getElementById("joinConference").disabled = true;
+  
+  // Habilitar o botão para encerrar a conferência
+  document.getElementById("stopConference").disabled = false;
+
+  sessionId = document.getElementById('sessionId').value;
+
+  //Iniciar uma conferência
+  v4h_api.joinConference(sessionId, document.querySelector('#meet'), '100%', '100%', 'Nome Sobrenome', 'https://picsum.photos/200');
+    
+  // Registar um callback para ser executado na saída da conferência
+  v4h_api.registerEndedListener(conferenceEnded);
+  
 }
 
+
+// Funcão executada quando o botão de desligar fora da conferência é clicado
+function stopVideoConf() {
+
+  // Desabilitar o botão para iniciar a conferência
+  document.getElementById("startConference").disabled = false;
+
+  // Habilitar o botão para encerrar a conferência
+  document.getElementById("stopConference").disabled = true;
+
+  // Encerrar o iframe
+	v4h_api.jApi.dispose();
+  
+}
+
+// Função executada quando o botão de desligar dentro da conferência é clicado
 function conferenceEnded(mySessionId) {
-    document.getElementById("confButton").innerHTML =
-		"<button type='button' onclick='startVideoConf()'>Iniciar Chamada de Vídeo</button>";
-	let last_conferences = document.getElementById("last_conferences");
-	last_conferences.innerHTML = last_conferences.innerHTML + "<a href='#' onclick='getStorageUrl(" + '"' + mySessionId + '"' + ")'> " + Date().toString() + "</a><br />";
+  
+  // Habilitar o botão para iniciar a conferência
+  document.getElementById("startConference").disabled = true;
+
+  // Desabilitar o botão para encerrar a conferência
+  document.getElementById("startConference").disabled = true;
+
 }
 
-function getStorageUrl(sessionId) { 
-	fetch(audit_url_base + '/get-url/' + mySessionId, {method: 'GET'}).then(function (response) {
-		return response.text().then(function (url) {
-			url = url.replace(/['"]+/g, '');
-			console.log('playing conference ' + mySessionId + ' from url ' + url);
-			document.getElementById("confButton").innerHTML = '';
-			document.getElementById("meet").innerHTML = "<video id='playback' width='320' height='240' controls> ";
+function validateJoin() {
 
-			let conf = document.getElementById('playback');
-			let source = document.createElement('source');
-			source.setAttribute('src', url);
-			conf.appendChild(source);
-			conf.load();
-			conf.play();
-		});
-	});
+  if(document.getElementById("sessionId").value.length > 0) {
+    
+    // Habilitar o botão para juntar-se a conferência
+    document.getElementById("joinConference").disabled = false;
+  
+  } else {
+
+    // Desabilitar o botão para juntar-se a conferência
+    document.getElementById("joinConference").disabled = true;
+
+  }
+
 }
