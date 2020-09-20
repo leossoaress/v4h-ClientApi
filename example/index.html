@@ -13,7 +13,13 @@
 
 <body>
 
-  <h1>V4H Client API - Example</h1>
+  <div class="topnav">
+    <a href="https://v4h.cloud">
+      V4H - Exemplo de integração
+    </a>
+  </div>
+
+  <!-- <h1>V4H Client API - Example</h1>
 
   <form>
     <label for="fname">SessionId</label>
@@ -22,9 +28,15 @@
 
   <button id="startConference" onclick="startVideoConf()">Start videoconference</button>
   <button id="joinConference" onclick="startVideoConf()">Join videoconference</button>
-  <button id="stopConference" onclick="stopVideoConf()">Stop videoconference</button>
+  <button id="stopConference" onclick="stopVideoConf()">Stop videoconference</button> -->
 
   <div id="meet"></div>
+
+  <div id="insert-container">
+    <img src="./static/logo2.png">
+    <input id="sessionId" type="text">
+    <button onclick="startVideoConf()">Entrar</button>
+  </div>
 
 </body>
 

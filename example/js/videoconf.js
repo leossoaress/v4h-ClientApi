@@ -7,36 +7,29 @@ $(document).ready(function() {
     console.log('Login realizado com sucesso.')
   });
 
-  // Desabilitar o botão para encerrar a conferência
-  document.getElementById("stopConference").disabled = true;
-
-  // Desabilitar o botão para encerrar a conferência
-  document.getElementById("joinConference").disabled = true;
-
 });
 
 // Funcão executada quando o botão de iniciar uma conferência é clicado
 function startVideoConf() {
-
-  // Desabilitar o botão para iniciar a conferência
-  document.getElementById("startConference").disabled = true;
-
-  // Desabilitar o botão para iniciar a conferência
-  document.getElementById("joinConference").disabled = true;
-
-  // Habilitar o botão para encerrar a conferência
-  document.getElementById("stopConference").disabled = false;
 
   sessionId = document.getElementById('sessionId').value;
 
   // Requisitar uma conferência
 	v4h_api.requestConference(sessionId).then(function (sessionId) {
 
+    // Desabilitar o botão para iniciar a conferência
+    document.getElementById("insert-container").style.display = 'none';
+
     //Iniciar uma conferência
-    v4h_api.startConference(sessionId, document.querySelector('#meet'), '100%', '100%', 'Nome Sobrenome', 'https://picsum.photos/200');
+    v4h_api.startConference(sessionId, document.querySelector('#meet'), '75%', '75%', 'Nome Sobrenome', 'https://picsum.photos/200');
     
     // Registar um callback para ser executado na saída da conferência
     v4h_api.registerEndedListener(conferenceEnded);
+
+  }).catch(function (err) {
+    
+    alert('Problema na criação da sessão: sessão já existe. ')
+    
   });
   
 }
@@ -81,11 +74,7 @@ function stopVideoConf() {
 // Função executada quando o botão de desligar dentro da conferência é clicado
 function conferenceEnded(mySessionId) {
   
-  // Habilitar o botão para iniciar a conferência
-  document.getElementById("startConference").disabled = true;
-
-  // Desabilitar o botão para encerrar a conferência
-  document.getElementById("startConference").disabled = true;
+  document.getElementById("insert-container").style.display = 'block';
 
 }
 
