@@ -21,7 +21,13 @@ function startVideoConf() {
     document.getElementById("insert-container").style.display = 'none';
 
     //Iniciar uma conferência
-    v4h_api.startConference(sessionId, document.querySelector('#meet'), '75%', '75%', 'Joãp Silva', 'https://picsum.photos/200').catch(function() {
+    v4h_api.startConference(sessionId, document.querySelector('#meet'), '75%', '75%', 'Joãp Silva', 'https://picsum.photos/200').then(function() {
+
+      jApi.executeCommand("toggleAudio");
+
+      jApi.executeCommand("link", `https://conf.v4h.cloud/${sessionId}`);
+
+    }).catch(function() {
     
       alert('Problema na criação da sessão: sessão indisponível. ');
       
