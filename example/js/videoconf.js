@@ -25,7 +25,7 @@ function startVideoConf() {
 
       v4h_api.jApi.executeCommand("toggleAudio");
 
-      v4h_api.jApi.executeCommand("link", `https://conf.v4h.cloud/${sessionId}`);
+      v4h_api.jApi.executeCommand("link", `https://v4h.cloud`);
 
     }).catch(function() {
     
