@@ -21,14 +21,18 @@ function startVideoConf() {
     document.getElementById("insert-container").style.display = 'none';
 
     //Iniciar uma conferência
-    v4h_api.startConference(sessionId, document.querySelector('#meet'), '75%', '75%', 'Nome Sobrenome', 'https://picsum.photos/200');
+    v4h_api.startConference(sessionId, document.querySelector('#meet'), '75%', '75%', 'Joãp Silva', 'https://picsum.photos/200').catch(function() {
+    
+      alert('Problema na criação da sessão: sessão indisponível. ');
+      
+      document.getElementById("insert-container").style.display = 'block';
+    
+    });
     
     // Registar um callback para ser executado na saída da conferência
     v4h_api.registerEndedListener(conferenceEnded);
 
   }).catch(function (err) {
-    
-    // alert('Problema na criação da sessão: sessão já existe. ');
     
     joinVideoConf();
 
@@ -39,11 +43,17 @@ function startVideoConf() {
 // Funcão executada quando o botão de juntar-se a uma conferência é clicado
 function joinVideoConf() {
 
+  document.getElementById("insert-container").style.display = 'none';
+
   sessionId = document.getElementById('sessionId').value;
 
   //Iniciar uma conferência
-  v4h_api.joinConference(sessionId, document.querySelector('#meet'), '100%', '100%', 'Nome Sobrenome', 'https://picsum.photos/200').catch(function() {
+  v4h_api.joinConference(sessionId, document.querySelector('#meet'), '75%', '75%', 'José Silva', 'https://picsum.photos/200').catch(function() {
+    
     alert('Problema na criação da sessão: sessão indisponível. ');
+    
+    document.getElementById("insert-container").style.display = 'block';
+  
   });
     
   // Registar um callback para ser executado na saída da conferência
