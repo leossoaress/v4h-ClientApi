@@ -28,8 +28,10 @@ function startVideoConf() {
 
   }).catch(function (err) {
     
-    alert('Problema na criação da sessão: sessão já existe. ')
+    // alert('Problema na criação da sessão: sessão já existe. ');
     
+    joinVideoConf();
+
   });
   
 }
@@ -37,19 +39,12 @@ function startVideoConf() {
 // Funcão executada quando o botão de juntar-se a uma conferência é clicado
 function joinVideoConf() {
 
-  // Desabilitar o botão para iniciar a conferência
-  document.getElementById("startConference").disabled = true;
-
-  // Desabilitar o botão para iniciar a conferência
-  document.getElementById("joinConference").disabled = true;
-  
-  // Habilitar o botão para encerrar a conferência
-  document.getElementById("stopConference").disabled = false;
-
   sessionId = document.getElementById('sessionId').value;
 
   //Iniciar uma conferência
-  v4h_api.joinConference(sessionId, document.querySelector('#meet'), '100%', '100%', 'Nome Sobrenome', 'https://picsum.photos/200');
+  v4h_api.joinConference(sessionId, document.querySelector('#meet'), '100%', '100%', 'Nome Sobrenome', 'https://picsum.photos/200').catch(function() {
+    alert('Problema na criação da sessão: sessão indisponível. ');
+  });
     
   // Registar um callback para ser executado na saída da conferência
   v4h_api.registerEndedListener(conferenceEnded);
@@ -60,12 +55,6 @@ function joinVideoConf() {
 // Funcão executada quando o botão de desligar fora da conferência é clicado
 function stopVideoConf() {
 
-  // Desabilitar o botão para iniciar a conferência
-  document.getElementById("startConference").disabled = false;
-
-  // Habilitar o botão para encerrar a conferência
-  document.getElementById("stopConference").disabled = true;
-
   // Encerrar o iframe
 	v4h_api.jApi.dispose();
   
@@ -75,21 +64,5 @@ function stopVideoConf() {
 function conferenceEnded(mySessionId) {
   
   document.getElementById("insert-container").style.display = 'block';
-
-}
-
-function validateJoin() {
-
-  if(document.getElementById("sessionId").value.length > 0) {
-    
-    // Habilitar o botão para juntar-se a conferência
-    document.getElementById("joinConference").disabled = false;
-  
-  } else {
-
-    // Desabilitar o botão para juntar-se a conferência
-    document.getElementById("joinConference").disabled = true;
-
-  }
 
 }
